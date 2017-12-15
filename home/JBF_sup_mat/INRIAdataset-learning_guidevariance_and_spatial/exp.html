@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<!-- added to use latek -->
+<script type="text/javascript" src="../../../script/LaTeXMathML.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../LaTeXMathML.standardarticle.css" />
+<!-- Simple style -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="../supp2.css" rel="stylesheet" media="all"><title></title>
+<script language="JavaScript" src="../../../script/password.js"></script>
+<link rel="icon" type="image/jpg" href="../../../data/logo_enpc_small.png">
+<title>jbfnet</title>
+</head><body>
+
+<h1>Experiment 06-03-17</h1>
+ <p>Learning the variance of seven guides  in the Joint Bilateral Formulation</p>
+<h2>Parameters</h2>
+<h3>Dataset</h3>
+ <ul>
+  <li>Name : INRIAdataset Dataset, 9 instances</li>
+  <li>Guide buffer : Depth, normal (*3), albedo (*3)</li>
+  <li>Input : image </li>
+  <li> Target : image filtered by JBF</li>
+  <li> imageWidth=1280</li>
+  <li> imageHeight=1920</li>
+</ul>
+
+<h3>Learning</h3>
+ <ul>
+ <li> optim="sgd"</li>
+<li> batchSize=1</li>
+<li> learningRate=0.1</li>
+<li> epoch_step="{500,1000}"</li>
+<li> max_epoch=1500</li>
+<li> weightDecay=0</li>
+<li> stride=10</li>
+<li> l1_weight=0.0</li>
+<li> learningRateDecay=0</li>
+<li> learningRateDecayRatio=0.1</li>
+</ul>
+
+<h3>Initialisation</h3>
+ <ul>
+  <li>train_spatial_gaussian = false,</li>
+  <li>train_guide_variance = true,</li>
+  <li>train_only_guide_branch = true,</li>
+</ul>
+
+<h2>Network</h2>
+<td><a href="./jbfnet.png"><img width="1000" src="./jbfnet.png" alt=""></a></td>  
+
+<h2>Results</h2>
+<p>
+  Final Loss : 9.7983404581707e-05
+</p>
+
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> input - guide</td>
+    </tr>
+    <tr align="right">
+      <td><a href="./input.png"><img height="250" src="./input.png" alt=""></a></td>  
+    </tr>
+     </tr>
+</table>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> output / target</td>
+    </tr>
+    <tr align="right">
+      <td><a href="./denoise.png"><img height="250" src="./denoise.png" alt=""></a></td>  
+    </tr>
+     </tr>
+</table>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> input  / target </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./input-target.png"><img height="200" src="./input-target.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> output / input</td>
+    </tr>
+    <tr align="right">
+      <td><a href="./denoise_vs_input.png"><img height="250" src="./denoise_vs_input.png" alt=""></a></td>  
+    </tr>
+     </tr>
+</table>
+
+
+<h2>Learning Curves</h2>
+<table cellpadding=2>
+    <tr align="center">
+      <td> Train curve </td>
+      <td> Test curve </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./train_curve.png"><img height="420" src="./train_curve.png" alt=""></a></td>  
+      <td><a href="./test_curve.png"><img height="420" src="./test_curve.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<h2>Comments</h2>
+
+<p>
+ <ul>
+  <li> This doesn't look very successful so far, we need to investigate further</li>
+  <li> Quelles sont les variances apprises ?</li>
+</ul>
+
+
+</p>
+
+<h2>Next experiment</h2>
+<p>
+ <ul>
+  <li>Make this experiment work</li>
+  <li>Learn also the spatial weights</li>
+</ul>
+</p>
+    <script type="text/javascript" src="../../../script/analytics.js"></script>
+
+</body></html>

@@ -1,0 +1,150 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <meta name="generator" content="HTML Tidy for Linux/x86 (vers 11 February 2007), see www.w3.org">
+  <style type="text/css">
+    /* Color scheme stolen from Sergey Karayev */
+    a {
+    color: #1772d0;
+    text-decoration:none;
+    }
+    a:focus, a:hover {
+    color: #f09228;
+    text-decoration:none;
+    }
+    body,td,th,tr,p,a {
+    font-family: 'Lato', Verdana, Helvetica, sans-serif;
+    font-size: 14px
+    }
+    strong {
+    font-family: 'Lato', Verdana, Helvetica, sans-serif;
+    font-size: 14px;
+    }
+    heading {
+    font-family: 'Lato', Verdana, Helvetica, sans-serif;
+    font-size: 22px;
+    }
+    papertitle {
+    font-family: 'Lato', Verdana, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 700
+    }
+    name {
+    font-family: 'Lato', Verdana, Helvetica, sans-serif;
+    font-size: 32px;
+    }
+    .one
+    {
+    width: 160px;
+    height: 160px;
+    position: relative;
+    }
+    .two
+    {
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    transition: opacity .2s ease-in-out;
+    -moz-transition: opacity .2s ease-in-out;
+    -webkit-transition: opacity .2s ease-in-out;
+    }
+    .fade {
+     transition: opacity .2s ease-in-out;
+     -moz-transition: opacity .2s ease-in-out;
+     -webkit-transition: opacity .2s ease-in-out;
+    }
+    span.highlight {
+        background-color: #ffffd0;
+    }
+  </style>
+    <link rel="icon" type="image/jpg" href="../data/logo_enpc_small.png">
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+  </head>
+  <body>
+    <table width="800" border="0" align="center" cellspacing="0" cellpadding="0">
+    <tr>
+    <td>
+      <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
+      <tr>
+        <td width="100%" valign="middle">
+          <heading>Thesis subject</heading>
+
+        </td>
+      </tr>
+      </table>
+
+      <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
+
+      <td valign="top" width="75%">
+          <p>
+          <papertitle>Photorealist Synthetic Images For Deep Learning</papertitle></a><br>
+          <strong><a href="../index.html">Thibault GROUEIX </a></strong> <br>
+          <strong>Advisors: Prof. Mathieu Aubry - Prof. Renaud Marlet </strong> <br>
+          <em>IMAGINE team - Ecole des Ponts ParisTech</em> <br>
+          <p></p>
+        </td>
+    </tr>
+      </table>
+      <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
+         <td width="25%">
+        <img src='../data/synthetic_dataset2.png'>
+      </td>
+            </table>
+     <!-- PAper -->
+      <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20">
+      <tr>
+        <td width="80%" valign="middle">
+          <heading>Abstract</heading>
+          <p>
+
+<strong>Motivation :</strong><br>
+The roots of this research project are Deep Learning on the one hand and Computer Graphics on the other hand.
+
+Thanks to recent advances in deep learning, Convolutional Neural Networks are state-of-the-art in a range of applications such as computer vision, speech recognition, NLP etc. They discover intricate patterns in the data using the backpropagation algorithm. The later indicates how a network should adjust its internal parameters to make better predictions. This scheme applied to huge datasets is at the core of deep learning recent successes. The quality of the prediction of a model is tighly linked with the quality of the dataset. A "good" dataset provides a large number of instances for a given problem, correct annotations, and a has large intra-class variability.<br>
+
+Though, for specific tasks, it is impossible or too costly to generate new datasets for training. There can be several reasons for this: manual annotation can be too hard for instance or large-scale annotation too costly. This is where computer graphics could provide an incredible benefit : using rendering, we can generate high-quality synthesis images with a reasonable cost. The key idea of this project is to analyze and leverage the power of high-quality rendered images, which we plan to generate with NVIDIA OPTIX, that we already used in a past project [1], or Mitsuba Renderer.<br>
+
+There are three main advantages to generate the dataset through rendering. The first is that the annotation is automatic (everything about a given scene is known at render time). It provides both cost reduction, and more accurate annotation. Second is the possibility to generate large-scale datasets more easily through automated rendering routines. A simple script can modify view points, textures of objects, modify the light sources, and the scene itself. Lastly and maybe most importantly, it allows for annotating tasks that human can not annotate. For instance, if we consider the task "Where does the light comes from in a picture?", manual annotation is very hard for humans. At the very best, we can only give an approximation of the ground-truth label. But in the rendering proccess, the directions of light can be remembered and the correct label can be easily computed. <br><br><br>
+
+<strong>Previous work :</strong><br>
+A number of other tasks can only be correctly labeled through rendering, such as optical flow estimation. In december 2015, researchers from Freibourg University used a synthetic dataset of flying chairs to try to predict optical flow [2]. Their results indicates that one can learn on synthetic data and successfully transfer the learned model on real images. However, many questions on the influence of the quality of the rendering remain unanswered, and will be tackled in this project. <br><br><br>
+
+<strong>Project plan :</strong><br>
+The objective of this project is to bridge computer graphics and deep learning, by providing experimental and theoretical analysis of the mechanisms of transfer between virtual and real datasets. We will focus on the following questions :<br>
+
+- To what extent can we learn CNNs on synthetic images and apply the learned network on real data ? For instance, generating a very high quality synthetic image can take up to a several hours: is there a benefit to such a realistic rendering?<br>
+- Can we use rendering to precisely define and evaluate new tasks, such as object insertion in pictures or global illumination light editing?<br>
+- How can we rethink neural networks architectures, error function and optimization strategies to tackle new tasks enabled by rendering?<br><br><br>
+
+<strong>Around this project: </strong><br>
+This project will be carried by Thibault Groueix, PhD canditate under the supervision of Prof. Mathieu Aubry and Prof. Renaud Marlet. Thibault GROUEIX is a former Ecole Polytechnique student who did a research internship in rendering at the graphic group of Prof. Tamy Boubekeur that led to a poster in eurographics on the one hand, and a master thesis at EPFL - Biomedical Imaging Group under the supervision of Prof. Adrien Depeursinge and Prof. Michael Unser on the other hand. The Imagine team of the Laboratoire d'Informatique Gaspart-Monge has an acknowledge expertise in deep learning and computer vision. The Inria GraphDeco team is a reference in computer graphics.<br><br><br>
+
+<strong>References</strong><br>
+
+[1] M. Boughida, T. Groueix, T. Boubekeur (2016). <a href=https://diglib.eg.org/handle/10.2312/egp20161048>
+Interactive Monte-Carlo Ray-Tracing Upsampling </a>. Published as a poster in Eurographics 2016 <br>
+
+[2] Dosovitskiy, A., Fischer, P., Ilg, E., Hausser, P., Hazirbas, C., Golkov, V., ... & Brox, T. (2015). Flownet: Learning optical flow with convolutional networks. In Proceedings of the IEEE International Conference on Computer Vision (pp. 2758-2766).<br>
+
+[3] He, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep residual learning for image recognition. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (pp. 770-778)<br>
+
+          </p>
+        </td>
+      </tr>
+      </table>
+
+    <script type="text/javascript" src="../script/analytics.js"></script>
+
+    </td>
+    </tr>
+  </table>
+
+
+  </body>
+</html>

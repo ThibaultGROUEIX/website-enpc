@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<!-- added to use latek -->
+<script type="text/javascript" src="../../../script/LaTeXMathML.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../LaTeXMathML.standardarticle.css" />
+<!-- Simple style -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="../supp2.css" rel="stylesheet" media="all"><title></title>
+<script language="JavaScript" src="../../../script/password.js"></script>
+<link rel="icon" type="image/jpg" href="../../../data/logo_enpc_small.png">
+<title>jbfnet</title>
+</head><body>
+
+<h1>Experiment 08-02-17</h1>
+
+<h2>Parameters</h2>
+<h3>Dataset</h3>
+ <ul>
+  <li>Name : Inria Dataset, 12 instances</li>
+  <li>Guide buffer : Depth</li>
+  <li>Noise : 5spp </li>
+  <li> imageWidth=1280</li>
+  <li> imageHeight=1920</li>
+</ul>
+
+<h3>Learning</h3>
+ <ul>
+ <li> optim="sgd"</li>
+<li> batchSize=1</li>
+<li> learningRate=0.001</li>
+<li> epoch_step="{20,40,60,80,100,120,140,160,180,200,220,240,260,300,320,340,360,380,400}"</li>
+<li> max_epoch=450</li>
+<li> weightDecay=0</li>
+<li> stride=4</li>
+<li> l1_weight=0.0</li>
+<li> learningRateDecay=0</li>
+<li> learningRateDecayRatio=0.3</li>
+</ul>
+
+<h3>Initialisation</h3>
+ <ul>
+  <li>train_only_spatial_gaussian = false,</li>
+  <li>good_init = false,</li>
+  <li>train_only_guide_branch = true,</li>
+</ul>
+
+<h2>Network</h2>
+<td><a href="./jbfnet.png"><img width="500" src="./jbfnet.png" alt=""></a></td>  
+
+<h2>Results</h2>
+<table cellpadding=2>
+    <tr align="center">
+      <td> input-target </td>
+      <td> guide </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./input-target.png"><img height="200" src="./input-target.png" alt=""></a></td>  
+      <td><a href="./guide.png"><img height="200" src="./guide.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> output(left), target(right) </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./denoise.png"><img height="250" src="./denoise.png" alt=""></a></td>  
+    </tr>
+     </tr>
+    <tr align="right">
+      <td><a href="./denoise_1.png"><img height="250" src="./denoise_1.png" alt=""></a></td>  
+    </tr>
+    <tr align="right">
+      <td><a href="./denoise_2.png"><img height="250" src="./denoise_2.png" alt=""></a></td>  
+    </tr>
+    <tr align="right">
+      <td><a href="./denoise_3.png"><img height="250" src="./denoise_3.png" alt=""></a></td>  
+    </tr>
+</table>
+<h2>Learning Curves</h2>
+<table cellpadding=2>
+    <tr align="center">
+      <td> Train curve </td>
+      <td> Test curve </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./train_curve.png"><img height="420" src="./train_curve.png" alt=""></a></td>  
+      <td><a href="./test_curve.png"><img height="420" src="./test_curve.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<h2>Comments</h2>
+
+<p>
+ <ul>
+  <li>Edges seem to be well preserved, but it could be a consequence of the high definition of the image and the small kernel.</li>
+  <li>The denoising is bad in high frequencies and texture is not preserved (quite logical since we use only the depth map)</li>
+  <li>The learning curve oscillates even in high frequencies because we chose randomly a channel for denoising and some channel can be harder to denoise than another</li>
+</ul>
+
+
+</p>
+
+<h2>Next experiment</h2>
+Learn only the spatial weights.    
+<script type="text/javascript" src="../../../script/analytics.js"></script>
+
+</body></html>

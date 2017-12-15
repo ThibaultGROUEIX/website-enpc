@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<!-- added to use latek -->
+<script type="text/javascript" src="../../script/LaTeXMathML.js"></script>
+<link rel="stylesheet" type="text/css" href="http://math.etsu.edu/LaTeXMathML/LaTeXMathML.standardarticle.css" />
+<!-- Simple style -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="supp2.css" rel="stylesheet" media="all">
+<link rel="icon" type="image/jpg" href="../../data/logo_enpc_small.png">
+<title>jbfnet</title>
+</head>
+<!-- basic password protect -->
+<script language="JavaScript" src="../../script/password.js"></script>
+<body>
+
+<h1>Motivation</h1>
+
+A lot of emphasis is being put on trying to denoise images obtained by rendering. There are several reasons to explain this attention.
+<ul>
+  <li>Given a time constraint for rendering, we can render a sequence of images, and post-enhance them using denoising (for application in real-time, such as video games for examples)</li>
+  <li>Even without time constraint, some images require an enormous amount of time to converge, and we want to be able to stop the rendering process at any given time and denoise the image to obtain satisfactory results.</li>
+  <li>If we can efficiently denoise a noisy rendered image, we can efficiently render a noisy image, and denoise it. It allow one to pre-visualize the converged image before launching the rendering process which is an enormous gain of time (because we can avoid mistakes).</li>
+</ul>
+<table cellpadding=2>
+    <tr align="center">
+      <td> Noisy </td>
+      <td> Denoised </td>
+    </tr>
+    <tr align="right">
+      <td><a href="data/Camera_488_back_0001_v2.png"><img height="200" src="data/Camera_488_back_0001_v2.png" alt=""></a></td>  
+      <td><a href="data/Camera_488_back_5000_v2.png"><img height="200" src="data/Camera_488_back_5000_v2.png" alt=""></a></td>  
+    </tr>
+  </table>
+
+<h2>State of the art</h2>
+There are several clever filters that emerged form this focus.
+<h3>The Joint Bilateral Filter (JBF)</h3>
+The JBF is a weighted average of an image. The weights are cleverly computed using a guide image that contains high-frequency structure of the image. The guide image can be a depth-maps, or any buffer we can obtain easily in rendering such as the albedo buffer, the normal buffer, the world position buffer, the direct illumination...<br>
+The filter has the nice property of being able to get rid of noise while preserving the edges in the image.
+<h3>Non Local Means(NLM)</h3>
+TODO
+<h3>Learning based methods</h3>
+TODO
+
+<h2>First motivation : designing an optimal filter</h2>
+
+As we saw it in this quick review, the JBF works because it takes information from another picture that has the same structure as the image we want to target. But what function exactly should we apply on  the guide image to obtain the optimal weights for denoising ? <br>
+To answer this question, we choose a space of filter function that contains all the classical filters and especially the JBF. Then using a synthetic database, we learn which function in this space is optimal for denoising.<br>
+It is a minimization problem, it can be viewed as trying to find the minimum of a high-dimension surface. As the JBF is a point on that surface, if we successfully reach the minimum, we will have design a filter that is better than the JBF. One obvious challenge is that the surface is non-convex, which make finding the minimum very hard. We can only explore local-minimum.
+
+<h2>Second motivation : Studying the importance of the guide buffers</h2>
+
+As we can design an optimal denoising filter, we can also estimate the contribution of each guide buffer, by designing their respective optimal buffer. Another approach would be to design the optimal buffer using every buffer at hand, and then remove each buffer separately and see how it affects the performances of our filter.  <br>
+We can them infer which buffer is important for denoising and which is less important, thus providing an interesting insight to the denoising community, out of our Deep Learning strategy.
+
+<h2>Third motivation : Optimal filters for specific noise</h2>
+
+If we successfully have a setting where we can learn the optimal denoising filter given a synthetic database, we can easily take advantage of the "no free lunch" theorem. Indeed, if we want to denoise specular noise and use an optimal filter for general denoising without any priors, we cannot hope to outperform filters designed specifically for this task. But we can create a database for this task and create optimal filters for specific type of noise. 
+We could tackle the denoising problem as a mixture model problem, having an  agent that choses which expert (denoising filter) we have to use given a noisy input.
+<h2>Follow-up ideas : transfer learning</h2>
+
+Are the optimal filters learned on synthetic data able to efficiently denoise natural images ?
+One obvious challenge is that we don't necessarily have access to guide buffer to denoise those images. A first experiment can be made on images where a depth buffer is available through a Kinect for example. 
+ <!-- analytics -->
+    <script type="text/javascript" src="../../script/analytics.js"></script>
+
+</body></html>

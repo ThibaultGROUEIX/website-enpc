@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<!-- added to use latek -->
+<script type="text/javascript" src="../../script/LaTeXMathML.js"></script>
+<link rel="stylesheet" type="text/css" href="http://math.etsu.edu/LaTeXMathML/LaTeXMathML.standardarticle.css" />
+<!-- Simple style -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="supp2.css" rel="stylesheet" media="all"><title></title>
+<script language="JavaScript" src="../../script/password.js"></script>
+<script language="JavaScript" src="../../script/subfolder.js"></script>
+<link rel="icon" type="image/jpg" href="../../data/logo_enpc_small.png">
+<title>jbfnet</title>
+</head><body>
+
+<h1>Proving that we can reproduce the Joint Bilateral Upsampling</h1>
+<input type="file" id="file-input" webkitdirectory="" directory="/home/thibault/projects/website"/>
+
+<h2>Joint Bilateral Upsampling Formulation</h2>
+
+ \begin{itemize}
+  \item I input image
+  \item $\tilde{I}$ guide image
+  \item J output image
+  \item $\Omega$ is a neighborhood of p
+  \item p and q are pixels
+  \item f and g are Gaussian
+\end{itemize}
+\begin{equation}
+J_p = \sum_{q \in \Omega} I_q \cdot \frac{f(\|p-q\|)g(\|\tilde{I}_p - \tilde{I}_q\|)}{\sum_{q \in \Omega} f(\|p-q\|)g(\|\tilde{I}_p - \tilde{I}_q\|)}
+\end{equation}
+\begin{equation}
+J_p = \sum_{q \in \Omega} I_q \cdot \frac{\exp{\frac{\|p-q\|^2}{\sigma_r}}\cdot\exp{\frac{\|\tilde{I}_p - \tilde{I}_q\|
+^2}{\sigma_d}}}{\sum_{q \in \Omega} \exp{\frac{\|p-q\|^2}{\sigma_r}}\cdot\exp{\frac{\|\tilde{I}_p - \tilde{I}_q\|
+^2}{\sigma_d}}}
+\end{equation}
+
+<h3>Example</h3>
+<p>
+  This image is an instance of the <a href="http://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html">NYUdataset</a>. The guide image (in the middle) is a depth maps of the natural scene acquired with a Kinect. The output was obtain by applying the Joint Bilateral Filter on the input and the guide image. The <a href="https://bitbucket.org/ThibaultGROUEIX/jbfnet/src/">code</a> is in MATLAB.
+</p>
+<td><a href="data/JBF_illustration.png"><img width="500" src="data/JBF_illustration.png" alt=""></a></td>  
+
+<h3>A weighted average</h3>
+
+<p>
+  As we understand from the equation, the JBF computes a weighted average over a patch around each pixel. The weight are the normalized dot-product between <i>spatial distance</i> and an <i>intensity distance</i> in the guide image.
+  Let's take an example.</br>
+  We consider the following instance, and we focus on a specific pixel. The corresponding patch around this pixel has been highlighted (it's a patch of size 31*31)
+  </p>
+<table cellpadding=2>
+    <tr align="center">
+      <td> Input </td>
+      <td> Guide </td>
+      <td> Target </td>
+    </tr>
+    <tr align="center">
+    <td><a href="data/input.jpg"><img height="120" src="data/input.jpg" alt=""></a></td>  
+      <td><a href="data/guide.jpg"><img height="120" src="data/guide.jpg" alt=""></a></td>  
+      <td><a href="data/target.jpg"><img height="120" src="data/target.jpg" alt=""></a></td> 
+    </tr>
+</table>
+Not let's look at what happens when we compute the Joint Bilateral Filter.
+<table cellpadding=2>
+    <tr align="center">
+      <td> Input patch </td>
+      <td> Guide patch</td>
+      <td> Intensity weights </td>
+      <td> Spatial weights </td>
+      <td> Global weights </td>
+      <td> Output </td>
+    </tr>
+    <tr align="center">
+      <td><a href="data/guideweighted_average/patchinput.jpg"><img height="120" src="data/weighted_average/patchinput.jpg" alt=""></a></td>  
+      <td><a href="data/weighted_average/patchguide.jpg"><img height="120" src="data/weighted_average/patchguide.jpg" alt=""></a></td> 
+      <td><a href="data/weighted_average/patchintensityguide.jpg"><img height="120" src="data/weighted_average/patchintensityguide.jpg" alt=""></a></td> 
+      <td><a href="data/weighted_average/patchgaussian.jpg"><img height="120" src="data/weighted_average/patchgaussian.jpg" alt=""></a></td> 
+      <td><a href="data/weighted_average/patchweight.jpg"><img height="120" src="data/weighted_average/patchweight.jpg" alt=""></a></td> 
+      <td><a href="data/weighted_average/patchoutpout.jpg"><img height="120" src="data/weighted_average/patchoutpout.jpg" alt=""></a></td> 
+    </tr>
+</table>
+<p>
+  We can comment that the Intensity weight role is to preserve the edges as pixel that do not have similar value in the guide image will not amount to much in the average. This gives the good properties of the  Joint Bilateral Filter which is to preserve edges (and high-frequencies in general). The spatial weight are patch-invariant and are important as well to the quality of the filter.
+</p>
+<h2>Towards a more general setting</h2>
+<p>
+Our aim is to work in a space of function that encompass the Joint Bilateral Filter, but are more general, and that has the nice property of being easily written in a Deep Learning setting. </br>
+To do so, we exhibit some parameters in the joint bilateral formulation, and <b>relax</b> them. <br>
+We first relax the spatial weight, then the intensity weight (keeping in mind that the spatial weight is a particular case of intensity weight is we consider the guide image to be a simple numeration of pixels).
+</p>
+<h3>Relaxing the spatial weights</h3>
+<p>
+The spatial weights are a Gaussian kernel. 
+A simple relaxation would be to relax the $\sigma_d$ parameter. We would then learn the optimal parameter for the Gaussian kernel but this information is not so interesting as the Joint Bilateral Filter has already been manually optimised a lot, and we would not expect better results.
+We opt for a hard relaxation, considering that each pixel of the kernel is a parameter, and we learn all of them. <br>
+If the kernel size is <font color="red">n*n</font>, then we have <font color="red">$n^2$ parameters.</font>
+</p>
+<h3>Relaxing the intensity weights</h3>
+<p>
+Relaxing the intensity weights is a little bit trickier. What the JBF does is transform an guide patch into the intensity weights which is a transformation of an <font color="red">$n^2$ dimensional space</font> into an <font color="red">$n^2$ dimensional space.</font>.
+We want to describe a space of function that performs this operation. The trivial relaxation is to relax $\sigma_r$, but again, this is not relevant. Instead we chose a hard relaxation, which is to describe the space of linear transform between the <font color="red">$n^2$ dimensional space</font> into the <font color="red">$n^2$ dimensional space.</font> (followed successively by a square operation, a multiplication by $-1$, and an exponential to ensure that this space contain the operation of the Joint Bilateral Filter.)
+If the kernel size is <font color="red">n*n</font>, then we have <font color="red">$n^4$ parameters.</font>
+</p>
+
+<h4>Why the Joint Bilateral Filter is a particular case of this ?</h4>
+<p>
+
+The space of function we consider linearly transform a kernel into another one. It means, each pixel of the transformed kernel is the result of a linear combination of the input kernel. In the following figure, we illustrate this linear combination by showing a small subset of all the linear weight. We focus on two output pixels, and a few input pixels to keep the figure clear. <br>
+ To each red arrow is associated an input pixel and a corresponding weight, to compute the top-left pixel of the output image. <br>
+ To each green arrow is associated an input pixel and a corresponding weight, to compute the other understudy pixel of the output image. <br>
+</p>
+<td><a href="data/linear_transform.png"><img width="500" src="data/linear_transform.png" alt=""></a></td>  
+<p>
+The weights can be formalized as $\theta_{i,j}$ where i is the index in the input image (the orign of an arrow) and j is the index in the output image (the target of the arrow). We have the special index $i_c$ and $j_c$ corresponding to the center of each kernel. <br>
+If we chose the following weights, we <i>exactly</i> obtain the Joint Bilateral Filter.
+<ul>
+  <li>$ \theta_{i_c,j} = 1$, $\forall j$</li>
+  <li>$ \theta_{i,i} = -1$, $\forall i$</li>
+  <li>$ \theta_{i_c,i_c} = -1$, $\forall i$</li>
+  <li>$ \theta_{i,j} = 0$, otherwise</li>
+</ul>
+ 
+</p>
+<td><a href="data/linear_transform_manual.png"><img width="500" src="data/linear_transform_manual.png" alt=""></a></td>  
+
+<h2>JBFnet architecture</h2>
+<td><a href="./data/jfbnet_orig.png"><img width="500" src="./data/jfbnet_orig.png" alt=""></a>
+Let's comment a little bit this architecture. 
+<h3>Input Branch</h3>
+
+The networks takes two inputs. Input 1 correspond to the image we want to filter. We apply a convolution on this image to obtain <font color="red">$n^2$</font> feature maps. In the JBF formulation, each feature corresponds to a single pixel in the input kernel. In practice we keep those weights fixed, and use this convolutional kernel $W_{i,k}$ where i is the spatial index and j the index of the feature map. We take $W_{i,k} = \delta_{i,k}$.
+Hence to each input pixel, we associate the patch around it.
+ 
+ <h3>Guide Branch</h3>
+
+ The guide branch acts exactly as we want it to be. A first convolutional layer linearly transform each patch into a kernel of weight. Then we apply constant operation to reproduce the JBF (cf: formula). We add the spatial Gaussian as a scaling factor and normalize the output.
+
+ <h3>Weighted Average</h3>
+
+ Finally given the input patch in the left branch and the weight patch in the right branch, we apply a point-wise multiplication and sum the contributions to each pixel, obtaining the filtered image.
+
+<td><a href="data/jbfnet_illustrated.png"><img width="500" src="data/jbfnet_illustrated.png" alt=""></a></td>  
+
+
+<h2>Theoretical proof</h2>
+<p>
+We showed that this architecture models the space of function we obtained after relaxing the Joint Bilateral Filter. Furthermore, we already showed here, that the Joint Bilateral Filter belongs to this space of function. Hence, given the proper weights, the network is able to reproduce exactly the architecture.
+</p>
+<p>
+  It's interesting to note that when we fixed the parameters to reproduce the JBU, only 0.2$\%$  of the weights are non zero. It seem <i>a priori</i> that we couldn't find a good balance between relaxing only the variance of the Gaussian and our hard relaxation. But this initial architecture is only a starting point towards an architecture close in spirit, but more classical in Deep Learning, and with less parameters. Working with classical architectures allow us to give a new interpretation of the role of the guide branch.
+</p>
+<h2>Practical proof</h2>
+  <table cellpadding=2>
+    <tr align="center">
+      <td> Input </td>
+      <td> Guide </td>
+      <td> Target </td>
+      <td> Output</td>
+      <td> Output difference(MSE)</td>
+       </tr>
+    <tr align="right">
+      <td><a href="data/input.jpg"><img height="120" src="data/input.jpg" alt=""></a></td>  
+      <td><a href="data/guide.jpg"><img height="120" src="data/guide.jpg" alt=""></a></td>  
+      <td><a href="data/target.jpg"><img height="120" src="data/target.jpg" alt=""></a></td> 
+      <td><a href="data/output.jpg"><img height="120" src="data/output.jpg" alt="">
+</a></td>
+      <td><a href="data/diff.jpg"><img height="120" src="data/diff.jpg" alt=""></a></br>loss = 2.058e-08</td>  
+       </tr>
+       <tr align="right">
+      <td><a href="data/input2.jpg"><img height="120" src="data/input2.jpg" alt=""></a></td>  
+      <td><a href="data/guide2.jpg"><img height="120" src="data/guide2.jpg" alt=""></a></td>  
+      <td><a href="data/target2.jpg"><img height="120" src="data/target2.jpg" alt=""></a></td> 
+      <td><a href="data/output2.jpg"><img height="120" src="data/output2.jpg" alt="">
+</a></td>
+      <td><a href="data/diff2.jpg"><img height="120" src="data/diff2.jpg" alt=""></a></br>loss = 2.514e-08</td>  
+       </tr>
+    <tr align="right">       
+      </tr>
+    <tr align="right">
+    </tr>
+    <tr align="right">
+      </tr>
+  </table><p></p>
+  <!-- analytics -->
+    <script type="text/javascript" src="../../script/analytics.js"></script>
+
+</body></html>

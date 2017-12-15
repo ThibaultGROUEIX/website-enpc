@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<!-- added to use latek -->
+<script type="text/javascript" src="../../../script/LaTeXMathML.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../LaTeXMathML.standardarticle.css" />
+<!-- Simple style -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="../supp2.css" rel="stylesheet" media="all"><title></title>
+<script language="JavaScript" src="../../../script/password.js"></script>
+<link rel="icon" type="image/jpg" href="../../../data/logo_enpc_small.png">
+<title>jbfnet</title>
+</head><body>
+
+<h1>Experiment 06-03-17</h1>
+ <p>Learning the spatial weight and the variance parameter of the guide buffer</p>
+<h2>Parameters</h2>
+<h3>Dataset</h3>
+ <ul>
+  <li>Name : Nyudataset Dataset, 1400 instances</li>
+  <li>Guide buffer : Depth</li>
+  <li>Input : image </li>
+  <li> Target : image filtered by JBF</li>
+  <li> imageWidth=480</li>
+  <li> imageHeight=640</li>
+</ul>
+
+<h3>Learning</h3>
+ <ul>
+ <li> optim="sgd"</li>
+<li> batchSize=1</li>
+<li> learningRate=0.1</li>
+<li> epoch_step="{200,400,600}"</li>
+<li> max_epoch=800</li>
+<li> weightDecay=0</li>
+<li> stride=8</li>
+<li> l1_weight=0.0</li>
+<li> learningRateDecay=0</li>
+<li> learningRateDecayRatio=0.1</li>
+</ul>
+
+<h3>Initialisation</h3>
+ <ul>
+  <li>train_spatial_gaussian = true,</li>
+  <li>train_guide_variance = true,</li>
+  <li>train_only_guide_branch = true,</li>
+</ul>
+
+<h2>Network</h2>
+<td><a href="./jbfnet.png"><img width="500" src="./jbfnet.png" alt=""></a></td>  
+
+<h2>Results</h2>
+<p>
+  Final Loss : 5.9816695565348e-06
+</p>
+<video width="320" height="240" controls>
+  <source src="./weight_learned.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<table cellpadding=2>
+    <tr align="center">
+      <td> input / guide / target </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./input.png"><img height="200" src="./input.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> output / target</td>
+    </tr>
+    <tr align="right">
+      <td><a href="./filtered_vs_target.png"><img height="250" src="./filtered_vs_target.png" alt=""></a></td>  
+    </tr>
+     </tr>
+</table>
+<h2>Learning Curves</h2>
+<table cellpadding=2>
+    <tr align="center">
+      <td> Train curve </td>
+      <td> Test curve </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./train_curve.png"><img height="420" src="./train_curve.png" alt=""></a></td>  
+      <td><a href="./test_curve.png"><img height="420" src="./test_curve.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<h2>Comments</h2>
+
+<p>
+ <ul>
+  <li>We learn the spatial weight correctly, and we learn the optimal variance parameter. We succesfully recreated the Joint Bilateral Filter</li>
+  <li>Using the BatchNormalization is a key to the success of the optimization as the parameter we try to learn is around 5000. The inverse variance of the data is 40. Hence we need to learn a parameter which is about 100. We use our knowledge and mutiply the output by ten. Hence the Cmul Layer and BatchNorm renormalization both learn a multiplier which is about 3, which is coherent with our target. Without this scheme, the exponential flattens the gradient and we are unable to reach the desired performance</li>
+</ul>
+
+
+</p>
+
+<h2>Next experiment</h2>
+<p>
+Two options.
+ <ul>
+  <li>Test this on real data (will be done regardless)</li>
+  <li>relax further the guide branch?</li>
+</ul>
+</p>
+    <script type="text/javascript" src="../../../script/analytics.js"></script>
+
+</body></html>

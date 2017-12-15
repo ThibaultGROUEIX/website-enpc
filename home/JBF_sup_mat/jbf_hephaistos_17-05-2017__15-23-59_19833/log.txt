@@ -1,0 +1,218 @@
+{
+  cudnn : false
+  optnet_optimize : false
+  dir_train : "/home/laurent/dataset2/train/small3/"
+  save_model_step : 
+    {
+      1 : 4
+      2 : 500
+      3 : 1000
+      4 : 1500
+      5 : 2000
+      6 : 3000
+      7 : 4000
+    }
+  name : ""
+  hflip : false
+  randomcrop : 0
+  batchSize : 1
+  data_type : "torch.CudaTensor"
+  model : "jbfnet_var"
+  kernelSize_small : 5
+  stride : 60
+  nesterov : true
+  cudnn_deterministic : false
+  multiply_input_factor : 1
+  dataset : "./datasets/INRIAdataset.t7"
+  relax_variance : false
+  momentum : 0.9
+  optimMethod : "sgd"
+  proof_of_concept : false
+  dropout : 0
+  weightDecay : 0
+  nbGuide : 10
+  ext : "005.exr"
+  init_value : 10
+  imageWidth : 1280
+  widen_factor : 1
+  epoch_step : 
+    {
+      1 : 1000
+      2 : 2000
+    }
+  randomcrop_type : "SpatialReflectionPadding"
+  imageHeight : 1920
+  dir_test : "/home/laurent/dataset2/test/exr/"
+  save : "logs/jbf_hephaistos_17-05-2017__15-23-59_19833"
+  dampening : 0
+  learningRate : 1
+  shortcutType : "A"
+  nb_features : 15
+  train_only_spatial_gaussian : true
+  depth : 50
+  learningRateDecay : 0
+  train_only_guide_branch : false
+  imageSize : 600
+  max_epoch : 5000
+  display_freq : 1
+  kernelSize : 21
+  learningRateDecayRatio : 0.1
+  generate_graph : false
+  nGPU : 1
+  seed : 444
+  backend : "cunn"
+  display_id : 10
+  display : 1
+}
+==> loading data	
+Found files_train:	
+67	
+Found files_test:	
+1	
+tds.Hash[2]{
+test  : tds.Vec[1]{
+            1 : /home/laurent/dataset2/test/exr/bathroom2_rgb_0005.exr
+        }
+train : tds.Vec[67]{
+            1 : /home/laurent/dataset2/train/small3/livingroom-back_Cam000_rgb_0005.exr
+            2 : /home/laurent/dataset2/train/small3/livingroom-back_Cam001_rgb_0005.exr
+            3 : /home/laurent/dataset2/train/small3/livingroom-back_Cam002_rgb_0005.exr
+            4 : /home/laurent/dataset2/train/small3/livingroom-back_Cam003_rgb_0005.exr
+            5 : /home/laurent/dataset2/train/small3/livingroom-back_Cam004_rgb_0005.exr
+            6 : /home/laurent/dataset2/train/small3/livingroom-back_Cam005_rgb_0005.exr
+            7 : /home/laurent/dataset2/train/small3/livingroom-back_Cam006_rgb_0005.exr
+            8 : /home/laurent/dataset2/train/small3/livingroom-back_Cam007_rgb_0005.exr
+            9 : /home/laurent/dataset2/train/small3/livingroom-back_Cam008_rgb_0005.exr
+           10 : /home/laurent/dataset2/train/small3/livingroom-back_Cam009_rgb_0005.exr
+           11 : /home/laurent/dataset2/train/small3/livingroom-back_Cam010_rgb_0005.exr
+           12 : /home/laurent/dataset2/train/small3/livingroom-back_Cam011_rgb_0005.exr
+           13 : /home/laurent/dataset2/train/small3/livingroom-back_Cam012_rgb_0005.exr
+           14 : /home/laurent/dataset2/train/small3/livingroom-back_Cam013_rgb_0005.exr
+           15 : /home/laurent/dataset2/train/small3/livingroom-back_Cam014_rgb_0005.exr
+           16 : /home/laurent/dataset2/train/small3/livingroom-back_Cam015_rgb_0005.exr
+           17 : /home/laurent/dataset2/train/small3/livingroom-back_Cam016_rgb_0005.exr
+           18 : /home/laurent/dataset2/train/small3/livingroom-back_Cam017_rgb_0005.exr
+           19 : /home/laurent/dataset2/train/small3/livingroom-back_Cam018_rgb_0005.exr
+           20 : /home/laurent/dataset2/train/small3/livingroom-back_Cam019_rgb_0005.exr
+        ...
+        }
+}
+==> configuring model	
+generate jbfnet...	
+21	
+finished generating jbfnet...	
+nn.Sequential {
+  [input -> (1) -> (2) -> (3) -> (4) -> (5) -> output]
+  (1): nn.SplitTable
+  (2): nn.ConcatTable {
+    input
+      |`-> (1): nn.Sequential {
+      |      [input -> (1) -> (2) -> (3) -> (4) -> (5) -> output]
+      |      (1): nn.SelectTable(1)
+      |      (2): nn.SpatialZeroPadding(l=-2, r=-2, t=-2, b=-2)
+      |      (3): nn.SpatialConvolution(1 -> 441, 21x21, 60,60) without bias
+      |      (4): nn.Transpose
+      |      (5): nn.Reshape(100x441)
+      |    }
+       `-> (2): nn.Sequential {
+             [input -> (1) -> (2) -> (3) -> (4) -> (5) -> (6) -> (7) -> (8) -> (9) -> (10) -> (11) -> (12) -> (13) -> (14) -> (15) -> output]
+             (1): nn.NarrowTable
+             (2): nn.JoinTable
+             (3): nn.SpatialConvolution(10 -> 15, 5x5) without bias
+             (4): nn.SpatialConvolution(15 -> 6615, 21x21, 60,60) without bias
+             (5): nn.Transpose
+             (6): nn.Reshape(44100x15)
+             (7): nn.Square
+             (8): nn.BatchNormalization (2D) (15)
+             (9): nn.CMul
+             (10): nn.Mean
+             (11): nn.MulConstant
+             (12): nn.Exp
+             (13): nn.Reshape(100x441)
+             (14): nn.CMul
+             (15): nn.Normalize(2)
+           }
+       ... -> output
+  }
+  (3): nn.CMulTable
+  (4): nn.Sum
+  (5): nn.Reshape(1x10x10)
+}
+Network has	3	convolutions	
+nn.SpatialConvolution	was frozen!!	
+nn.SpatialConvolution	was frozen!!	
+porting model to GPU...	
+Will save at logs/jbf_hephaistos_17-05-2017__15-23-59_19833	
+==> online epoch # 1 [batchSize = 1]	
+{
+  batch_var9 : nan
+  layer_mul13 : nan
+  batch_var8 : nan
+  batch_var15 : nan
+  batch_var14 : nan
+  var2 : nan
+  var14 : nan
+  layer_mul3 : nan
+  var15 : nan
+  var11 : nan
+  batch_mul5 : nan
+  batch_mul4 : nan
+  batch_mul9 : nan
+  layer_mul11 : nan
+  batch_var11 : nan
+  batch_var4 : nan
+  batch_var7 : nan
+  batch_var6 : nan
+  batch_var5 : nan
+  batch_mul3 : nan
+  batch_var10 : nan
+  layer_mul15 : nan
+  layer_mul12 : nan
+  layer_mul2 : nan
+  batch_mul6 : nan
+  layer_mul14 : nan
+  var6 : nan
+  batch_var1 : nan
+  batch_var3 : nan
+  batch_mul7 : nan
+  var3 : nan
+  batch_mul14 : nan
+  batch_mul10 : nan
+  layer_mul1 : nan
+  layer_mul5 : nan
+  batch_mul1 : nan
+  batch_mul2 : nan
+  batch_mul12 : nan
+  var8 : nan
+  batch_mul13 : nan
+  batch_mul11 : nan
+  layer_mul7 : nan
+  var5 : nan
+  batch_var2 : nan
+  batch_mul8 : nan
+  var1 : nan
+  var4 : nan
+  layer_mul9 : nan
+  layer_mul8 : nan
+  layer_mul10 : nan
+  var10 : nan
+  var13 : nan
+  batch_mul15 : nan
+  layer_mul6 : nan
+  batch_var12 : nan
+  batch_var13 : nan
+  layer_mul4 : nan
+  var9 : nan
+  var7 : nan
+  var12 : nan
+}
+/home/thibault/torch/install/bin/luajit: train-NYU.lua:372: Cannot serialise number: must not be NaN or Infinity
+stack traceback:
+	[C]: in function 'encode'
+	train-NYU.lua:372: in function 'log'
+	train-NYU.lua:500: in function 'hooks'
+	...ch/install/share/lua/5.1/torchnet/engine/optimengine.lua:122: in function 'train'
+	train-NYU.lua:530: in main chunk
+	[C]: in function 'dofile'
+	...ault/torch/install/lib/luarocks/rocks/trepl/scm-1/bin/th:150: in main chunk
+	[C]: at 0x00405d50

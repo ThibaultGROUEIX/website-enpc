@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<!-- added to use latek -->
+<script type="text/javascript" src="../../script/LaTeXMathML.js"></script>
+<link rel="stylesheet" type="text/css" href="../../LaTeXMathML.standardarticle.css" />
+<!-- Simple style -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="../supp2.css" rel="stylesheet" media="all"><title></title>
+<script language="JavaScript" src="../../../script/password.js"></script>
+<link rel="icon" type="image/jpg" href="../../../data/logo_enpc_small.png">
+<title>jbfnet</title>
+</head><body>
+
+<h1>Experiment</h1>
+
+
+<h2>Parameters</h2>
+
+<p>Check out the <a href="./log.txt"> log file </a> which is in the same folder to review the network architecture and the parameters</p>
+
+<h3>Who are they ?</h3>
+\begin{equation}
+e^{\frac{ layermul \cdot batchmul \cdot x}{\sqrt{batchvar}} }
+\end{equation}
+ 
+ Below we display 
+  <tr align="center">
+      <tr> x1 = layermul <br></tr>
+      <tr> x2 = batchmul<br> </tr>
+      <tr> x3 =  1/(sqrt(batchvar))<br></tr>
+  </tr>
+
+  You can view those coeff as :
+\begin{equation}
+e^{x1 \cdot x2 \cdot x3 \cdot x }
+\end{equation}
+
+Finally :<br>
+\begin{equation}
+var = \frac{1}{\sqrt{2 \cdot x1 \cdot x2 \cdot x3 }}
+\end{equation}
+
+ leading to  <br>
+
+ \begin{equation}
+e^{\frac{x}{2 \cdot var^2} }
+\end{equation}
+
+
+<p>NB : in the classic exp(-x2/(2sigma2)) : f(0) = 1, f(1) = 0.5 f(2) = 0.15 f(3) = 0.012</p>
+
+<p>70% de l'influence des poids est comprise pour un écart < sigma  </p>
+
+
+<h2>Learning Curves</h2>
+<table cellpadding=2>
+    <tr align="center">
+      <td> Train curve </td>
+      <td> Test curve </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./train_curve26202.png"><img height="420" src="./train_curve26202.png" alt=""></a></td>  
+      <td><a href="./test_curve26202.png"><img height="420" src="./test_curve26202.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<h2>Parameters evolution</h2>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> var </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./var26202.png"><img height="420" src="./var26202.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> layer mul </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./layer_mul26202.png"><img height="420" src="./layer_mul26202.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> batch mul </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./batch_mul26202.png"><img height="420" src="./batch_mul26202.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> batch var </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./batch_var26202.png"><img height="420" src="./batch_var26202.png" alt=""></a></td>  
+    </tr>
+</table>
+
+<video width="320" height="240" controls>
+  <source src="./gaussian_weight/weight_learned.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+<h2>Results</h2>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> train </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./input_train_75_26202.png"><img height="250" src="./input_train_75_26202.png" alt=""></a></td>  
+      <td><a href="./output_train_75_26202.png"><img height="250" src="./output_train_75_26202.png" alt=""></a></td>  
+      <td><a href="./target_train_75_26202.png"><img height="250" src="./target_train_75_26202.png" alt=""></a></td>  
+    </tr>
+     </tr>
+</table>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> val </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./input_train_1_26202.png"><img height="250" src="./input_train_1_26202.png" alt=""></a></td>  
+      <td><a href="./output_train_1_26202.png"><img height="250" src="./output_train_1_26202.png" alt=""></a></td>  
+      <td><a href="./target_train_1_26202.png"><img height="250" src="./target_train_1_26202.png" alt=""></a></td>  
+    </tr>
+     </tr>
+</table>
+
+<table cellpadding=2>
+    <tr align="center">
+      <td> test </td>
+    </tr>
+    <tr align="right">
+      <td><a href="./input_test_1_26202.png"><img height="250" src="./input_test_1_26202.png" alt=""></a></td>  
+      <td><a href="./output_test_1_26202.png"><img height="250" src="./output_test_1_26202.png" alt=""></a></td>  
+      <td><a href="./target_test_1_26202.png"><img height="250" src="./target_test_1_26202.png" alt=""></a></td>  
+    </tr>
+</table>
+
+
+
+<script type="text/javascript" src="../../../script/analytics.js"></script>
+
+</body></html>
