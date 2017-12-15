@@ -1,4 +1,160 @@
 /* Color scheme stolen from Sergey Karayev */
+
+
+main {
+width: 100%;
+height: 100%;
+background: #fff;
+color: white;
+padding: 0px;
+font-family: 'Open Sans', sans-serif;
+margin: 0px;
+font-size: 10px;
+	position: relative;
+	top: 35%;
+	-webkit-transform: translateY(-10%);
+	   -moz-transform: translateY(-10%);
+	     -o-transform: translateY(-10%);
+	    -ms-transform: translateY(-10%);
+	        transform: translateY(-10%);
+}
+
+/* ICON LIST */
+main .icon-list {
+	list-style: none;
+	margin: 0 auto;
+	display: block;
+	margin-top: 10px;
+	text-align: center;
+	padding: 0px;
+	width: 350px;
+}
+
+main .icon-list > li {
+	-webkit-border-radius: 100px;
+	        border-radius: 100px;
+	border-width: 2px;
+	border-style: solid;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 2em;
+	height: 28px;
+	margin-bottom: 0.1em;
+	margin-right: 0.1em;
+	overflow: hidden;
+	opacity: 1;
+	padding: 10px;
+	position: relative;
+	-webkit-transition: all .25s;
+	   -moz-transition: all .25s;
+	        transition: all .25s;
+	width: 28px;
+}
+
+main .icon-list > li a {
+	color: inherit;
+	line-height: 28px;
+}
+
+main .icon-list > li:hover > a {
+	color: white;
+}
+
+main .icon-list > li.home {
+	border-color: #28800C;
+	color: #28800C;
+}
+main .icon-list > li.home:hover {
+	background: #28800C;
+}
+
+main .icon-list > li.email {
+	border-color: #777;
+	color: #777;
+}
+main .icon-list > li.email:hover {
+	background: #777;
+}
+
+main .icon-list > li.phone {
+	border-color: #8F00BF;
+	color: #8F00BF;
+}
+main .icon-list > li.phone:hover {
+	background: #8F00BF;
+}
+
+main .icon-list > li.bitbucket {
+	border-color: #204F7E;
+	color: #204F7E;
+}
+main .icon-list > li.bitbucket:hover {
+	background: #204F7E;
+}
+
+main .icon-list > li.github {
+	border-color: #222222;
+	color: #222222;
+}
+main .icon-list > li.github:hover {
+	background: #222222;
+}
+
+main .icon-list > li.cv {
+	border-color: #FF8400;
+	color: #FF8400;
+}
+main .icon-list > li.cv:hover {
+	background: #FF8400;
+}
+
+main .icon-list > li.facebook {
+	border-color: #3b5998;
+	color: #3b5998;
+}
+main .icon-list > li.facebook:hover {
+	background: #3b5998;
+}
+
+/* NOT USED */
+main .icon-list > li.twitter {
+	border-color: #1da1f2;
+	color: #1da1f2;
+}
+main .icon-list > li.twitter:hover {
+	background: #1da1f2;
+}
+
+main .icon-list > li.linkedin {
+	border-color: #0976b4;
+	color: #0976b4;
+}
+main .icon-list > li.linkedin:hover {
+	background: #0976b4;
+}
+
+.icon-list > li.medium {
+	border-color: #02b875;
+	color: #02b875;
+}
+main .icon-list > li.medium:hover {
+	background: #02b875;
+}
+
+main .icon-list li > a {
+	color: inherit;
+}
+
+main .icon-list li > a:active,
+main .icon-list li > a:visited {
+	/* color: white; */
+}
+
+main .icon-list li:hover {
+	opacity: 1;
+}
+
+
 a {
 color: #1772d0;
 text-decoration:none;

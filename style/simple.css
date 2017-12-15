@@ -1,12 +1,12 @@
-html {
-  background-color: #eeeeee; 
+/*html {
+  background-color: #eeeeee;
 }
 
-body { 
+body {
   font-family: Georgia, Book Antiqua, Palatino, Garamond, Times New Roman, Times, serif;
   color: #000;
-  background-color: #ffffff; 
-  margin-top: 30px; 
+  background-color: #ffffff;
+  margin-top: 30px;
   margin-bottom: 30px;
   margin-left: auto;
   margin-right: auto;
@@ -29,4 +29,4 @@ td { padding: 10px 10px;}
 h1 a:visited,h1 a:link,.citation a{ text-decoration: none; color: black; font-weight: bold;}
 h1 a:hover,.citation a:hover { text-decoration: underline; }
 .citation { margin-bottom: 1ex; }
-.citation .journal { font-style: italic; font-size: 115%; margin-bottom: 0.5ex; }
+.citation .journal { font-style: italic; font-size: 115%; margin-bottom: 0.5ex; }*/
